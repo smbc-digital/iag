@@ -5,11 +5,11 @@ git clone git@github.com:smbc-digital/aws-provisioning.git
 export APP_VERSION=1.1.$SNAP_PIPELINE_COUNTER
 
 pushd iag-webapp
-make package
+make publish
 popd
 
 pushd iag-contentapi
-make package
+make publish
 popd
 
 pushd aws-provisioning
