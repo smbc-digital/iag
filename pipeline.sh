@@ -2,19 +2,18 @@
 
 export APP_VERSION=1.1.$SNAP_PIPELINE_COUNTER
 
-clone_repos() {
-  rm -rf iag-webapp
-  rm -rf iag-contentapi
-  rm -rf aws-provisioning
+clone() {
+  repository=$1
 
-  echo "Cloning repositories.."
-  git clone git@github.com:smbc-digital/iag-webapp.git
-  git clone git@github.com:smbc-digital/iag-contentapi.git
-  git clone git@github.com:smbc-digital/aws-provisioning.git
+  echo "Removing '$repository'..."
+  rm -rf $repository
+  git clone git@github.com:smbc-digital/$repository.git
 }
 
 build() {
-  clone_repos
+  clone "iag-webapp"
+  clone "iag-contentapi"
+  clone "aws-provisioning"
 
   pushd iag-webapp
   make publish
@@ -30,6 +29,7 @@ build() {
 }
 
 deploy() {
+  clone "aws-provisioning"
   pushd aws-provisioning
   APPLICATION=iag make beanstalk
   popd
