@@ -11,3 +11,7 @@ popd
 pushd iag-contentapi
 make package
 popd
+
+pushd aws-provisioning
+RESOURCE=beanstalk APPLICATION=iag make publish
+popd
