@@ -56,10 +56,10 @@ install() {
 }
 
 smoke_test() {
-  clone "aws-provisioning"
   pushd aws-provisioning
-  python src/smoketest.py iag healthystockport
-  python src/smoketest.py iag stockportgov
+  source venv/bin/activate
+  python src/smoketest.py iag $APP_VERSION healthystockport
+  python src/smoketest.py iag $APP_VERSION stockportgov
   popd
 }
 
