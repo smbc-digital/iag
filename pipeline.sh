@@ -49,18 +49,10 @@ deploy() {
   popd
 }
 
-install() {
-  pip install virtualenv
-	virtualenv -p /usr/bin/python3 venv
-	source venv/bin/activate
-	pip install -r requirements.txt
-}
-
 smoke_test() {
   pushd aws-provisioning
-  install
-  python src/smoketest.py iag $APP_VERSION healthystockport
-  python src/smoketest.py iag $APP_VERSION stockportgov
+  BUSINESS_ID=healthystockport make smoke-test
+  BUSINESS_ID=stockportgov make smoke-test
   popd
 }
 
