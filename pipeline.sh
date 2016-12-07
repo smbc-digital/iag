@@ -17,11 +17,23 @@ build() {
   clone "aws-provisioning"
 
   pushd iag-webapp
-  make publish
+  make build
   popd
 
   pushd iag-contentapi
-  make publish
+  make build
+  popd
+}
+
+publish() {
+  pushd iag-webapp
+  make tag
+  make push
+  popd
+
+  pushd iag-contentapi
+  make tag
+  make push
   popd
 
   pushd aws-provisioning
