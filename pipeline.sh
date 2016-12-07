@@ -56,6 +56,15 @@ smoke_test() {
   popd
 }
 
+ui_test() {
+  clone "iag-webapp"
+  pushd iag-webapp/test/StockportWebappTests/UI
+  npm install
+  popd
+  pushd iag-webapp
+  make ui-test
+}
+
 handle_command() {
 
   case "$1" in
@@ -71,9 +80,12 @@ handle_command() {
     smoke-test)
       smoke_test
       ;;
+    ui-test)
+      ui_test
+      ;;
   *)
     echo Invalid Option "'$1'"!
-    echo "Available options are: <build/publish/deploy/smoke-test>"
+    echo "Available options are: <build/publish/deploy/smoke-test/ui-test>"
     exit 1
   esac
 }
