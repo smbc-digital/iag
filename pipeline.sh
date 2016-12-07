@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 export APP_VERSION=1.1.$SNAP_PIPELINE_COUNTER
 
@@ -37,8 +38,8 @@ deploy() {
 
 smoke_test() {
   pushd aws-provisioning
-  APPLICATION=iag,BUSINESS-ID=healthystockport make smoke-test
-  APPLICATION=iag,BUSINESS-ID=stockportgov make smoke-test
+  APPLICATION=iag BUSINESS-ID=healthystockport make smoke-test
+  APPLICATION=iag BUSINESS-ID=stockportgov make smoke-test
   popd
 }
 
