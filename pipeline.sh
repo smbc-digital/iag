@@ -61,6 +61,9 @@ handle_command() {
     build)
       build
       ;;
+    publish)
+      publish
+      ;;
     deploy)
       deploy
       ;;
@@ -69,7 +72,7 @@ handle_command() {
       ;;
   *)
     echo Invalid Option "'$1'"!
-    echo "Available options are: <build/deploy/smoke-test>"
+    echo "Available options are: <build/publish/deploy/smoke-test>"
     exit 1
   esac
 }
