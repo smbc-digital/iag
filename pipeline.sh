@@ -50,14 +50,15 @@ deploy() {
 }
 
 install() {
-  virtualenv venv
-  source venv/bin/activate
-  pip install -r requirements.txt
+  pip install virtualenv
+	virtualenv -p /usr/bin/python3 venv
+	source venv/bin/activate
+	pip install -r requirements.txt
 }
 
 smoke_test() {
   pushd aws-provisioning
-  source venv/bin/activate
+  install
   python src/smoketest.py iag $APP_VERSION healthystockport
   python src/smoketest.py iag $APP_VERSION stockportgov
   popd
