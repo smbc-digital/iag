@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+export APPLICATION=iag
 export APP_VERSION=1.1.$SNAP_PIPELINE_COUNTER
 
 clone() {
@@ -37,21 +38,28 @@ publish() {
   popd
 
   pushd aws-provisioning
-  RESOURCE=beanstalk APPLICATION=iag make publish
+  RESOURCE=beanstalk make publish
   popd
 }
 
 deploy() {
   clone "aws-provisioning"
   pushd aws-provisioning
-  APPLICATION=iag make beanstalk
+  make beanstalk
   popd
 }
 
+install() {
+  virtualenv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+}
+
 smoke_test() {
+  clone "aws-provisioning"
   pushd aws-provisioning
-  APPLICATION=iag BUSINESS-ID=healthystockport make smoke-test
-  APPLICATION=iag BUSINESS-ID=stockportgov make smoke-test
+  python src/smoketest.py iag healthystockport
+  python src/smoketest.py iag stockportgov
   popd
 }
 
