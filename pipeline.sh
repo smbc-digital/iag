@@ -35,6 +35,13 @@ deploy() {
   popd
 }
 
+smoke_test() {
+  pushd aws-provisioning
+  APPLICATION=iag,BUSINESS-ID=healthystockport make smoke-test
+  APPLICATION=iag,BUSINESS-ID=stockportgov make smoke-test
+  popd
+}
+
 handle_command() {
 
   case "$1" in
@@ -44,9 +51,12 @@ handle_command() {
     deploy)
       deploy
       ;;
+    smoke-test)
+      smoke_test
+      ;;
   *)
     echo Invalid Option "'$1'"!
-    echo "Available options are: <build/deploy>"
+    echo "Available options are: <build/deploy/smoke-test>"
     exit 1
   esac
 }
