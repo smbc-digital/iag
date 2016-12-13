@@ -57,6 +57,7 @@ smoke_test() {
 }
 
 ui_test() {
+  APEX_DOMAIN=smbctest.com
   clone "iag-webapp"
   pushd iag-webapp/test/StockportWebappTests/UI
   npm cache clear
@@ -64,10 +65,12 @@ ui_test() {
   popd
 
   pushd iag-webapp
-  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-healthystockport.smbctest.com
+  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-healthystockport.$APEX_DOMAIN
+  echo "Running ui tests on '$UI_TEST_HOST'"
   make ui-test
 
-  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-stockportgov.smbctest.com
+  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-stockportgov.$APEX_DOMAIN
+  echo "Running ui tests on '$UI_TEST_HOST'"
   make ui-test
   popd
 }
