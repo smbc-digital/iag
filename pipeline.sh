@@ -74,6 +74,10 @@ build() {
   make build
   popd
 
+  pushd aws-provisioning
+  RESOURCE=beanstalk make build
+  popd
+
   __publish
 }
 
