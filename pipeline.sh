@@ -9,7 +9,7 @@ __clone() {
 
   echo "Removing '$repository'..."
   rm -rf $repository
-  git __clone git@github.com:smbc-digital/$repository.git
+  git clone git@github.com:smbc-digital/$repository.git
 }
 
 __publish() {
