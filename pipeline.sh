@@ -62,7 +62,12 @@ ui_test() {
   npm cache clear
   npm install
   popd
+
   pushd iag-webapp
+  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-healthystockport.smbctest.com
+  make ui-test
+
+  export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-stockportgov.smbctest.com
   make ui-test
   popd
 }
