@@ -61,10 +61,14 @@ __run_ui_test() {
   popd
 }
 
-build() {
+__clone_repos() {
   __clone "iag-webapp"
   __clone "iag-contentapi"
   __clone "aws-provisioning"
+}
+
+build() {
+  __clone_repos
 
   pushd iag-webapp
   make build
@@ -83,8 +87,7 @@ build() {
 
 integration() {
     export ENVIRONMENT=int
-    __clone "aws-provisioning"
-    __clone "iag-webapp"
+
     __deploy
     __smoke_test
     __ui_test
@@ -92,21 +95,18 @@ integration() {
 
 qa() {
     export ENVIRONMENT=qa
-    __clone "aws-provisioning"
     __deploy
     __smoke_test
 }
 
 stage() {
     export ENVIRONMENT=stage
-    __clone "aws-provisioning"
     __deploy
     __smoke_test
 }
 
 prod() {
     export ENVIRONMENT=prod
-    __clone "aws-provisioning"
     __deploy
     __smoke_test
 }
