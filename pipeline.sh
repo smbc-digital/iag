@@ -59,7 +59,7 @@ smoke_test() {
 ui_test() {
   clone "iag-webapp"
   pushd iag-webapp/test/StockportWebappTests/UI
-  npm clear cache
+  npm cache clear
   npm install
   popd
   pushd iag-webapp
