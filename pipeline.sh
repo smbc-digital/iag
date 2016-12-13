@@ -4,29 +4,15 @@ set -e
 export APPLICATION=iag
 export APP_VERSION=1.1.$SNAP_PIPELINE_COUNTER
 
-clone() {
+__clone() {
   repository=$1
 
   echo "Removing '$repository'..."
   rm -rf $repository
-  git clone git@github.com:smbc-digital/$repository.git
+  git __clone git@github.com:smbc-digital/$repository.git
 }
 
-build() {
-  clone "iag-webapp"
-  clone "iag-contentapi"
-  clone "aws-provisioning"
-
-  pushd iag-webapp
-  make build
-  popd
-
-  pushd iag-contentapi
-  make build
-  popd
-}
-
-publish() {
+__publish() {
   pushd iag-webapp
   make tag
   make push
@@ -42,33 +28,30 @@ publish() {
   popd
 }
 
-deploy() {
-  clone "aws-provisioning"
+__deploy() {
   pushd aws-provisioning
   make beanstalk
   popd
 }
 
-smoke_test() {
+__smoke_test() {
   pushd aws-provisioning
   BUSINESS_ID=healthystockport make smoke-test
   BUSINESS_ID=stockportgov make smoke-test
   popd
 }
 
-ui_test() {
-
-  clone "iag-webapp"
+__ui_test() {
   pushd iag-webapp/test/StockportWebappTests/UI
   npm cache clear
   npm install
   popd
 
-  run_ui_test "healthystockport"
-  run_ui_test "stockportgov"
+  __run_ui_test "healthystockport"
+  __run_ui_test "stockportgov"
 }
 
-run_ui_test() {
+__run_ui_test() {
   APEX_DOMAIN=smbctest.com
   pushd iag-webapp
   export BUSINESS_ID=$1
@@ -78,27 +61,73 @@ run_ui_test() {
   popd
 }
 
+build() {
+  __clone "iag-webapp"
+  __clone "iag-contentapi"
+  __clone "aws-provisioning"
+
+  pushd iag-webapp
+  make build
+  popd
+
+  pushd iag-contentapi
+  make build
+  popd
+
+  __publish
+}
+
+integration() {
+    export ENVIRONMENT=int
+    __clone "aws-provisioning"
+    __clone "iag-webapp"
+    __deploy
+    __smoke_test
+    __ui_test
+}
+
+qa() {
+    export ENVIRONMENT=qa
+    __clone "aws-provisioning"
+    __deploy
+    __smoke_test
+}
+
+stage() {
+    export ENVIRONMENT=stage
+    __clone "aws-provisioning"
+    __deploy
+    __smoke_test
+}
+
+prod() {
+    export ENVIRONMENT=prod
+    __clone "aws-provisioning"
+    __deploy
+    __smoke_test
+}
+
 handle_command() {
 
   case "$1" in
     build)
       build
       ;;
-    publish)
-      publish
+    integration)
+      integration
       ;;
-    deploy)
-      deploy
+    qa)
+      qa
       ;;
-    smoke-test)
-      smoke_test
+    stage)
+      stage
       ;;
-    ui-test)
-      ui_test
+    prod)
+      prod
       ;;
   *)
     echo Invalid Option "'$1'"!
-    echo "Available options are: <build/publish/deploy/smoke-test/ui-test>"
+    echo "Available options are: <build/integration/qa/stage/prod>"
     exit 1
   esac
 }
