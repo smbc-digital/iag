@@ -10,6 +10,9 @@ __clone() {
   echo "Removing '$repository'..."
   rm -rf $repository
   git clone git@github.com:smbc-digital/$repository.git
+
+  echo "Latest commit:"
+  git -C $repository log -n 1 --oneline
 }
 
 __publish() {
