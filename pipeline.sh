@@ -55,7 +55,7 @@ __ui_test() {
 }
 
 __run_ui_test() {
-  APEX_DOMAIN=smbctest.com
+  APEX_DOMAIN=smbcdigital.net
   pushd iag-webapp
   export BUSINESS_ID=$1
   export UI_TEST_HOST=http://$ENVIRONMENT-$APPLICATION-$BUSINESS_ID.$APEX_DOMAIN
