@@ -28,6 +28,7 @@ __disable_schedule() {
   pushd aws_provisioning
   python src/schedule.py $APPLICATION disable
   popd
+}
 
 
 __publish() {
