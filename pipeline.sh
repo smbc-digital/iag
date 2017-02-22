@@ -19,14 +19,14 @@ __clone() {
 __enable_schedule() {
 
   pushd aws-provisioning
-  python src/schedule.py $APPLICATION enable
+  make schedule_enable
   popd
 }
 
 __disable_schedule() {
 
   pushd aws-provisioning
-  python src/schedule.py $APPLICATION disable
+  make schedule_disable
   popd
 }
 
