@@ -15,6 +15,21 @@ __clone() {
   git -C $repository log -n 1 --oneline
 }
 
+
+__enable_schedule() {
+
+  pushd aws_provisioning
+  python src/schedule.py $APPLICATION enable
+  popd
+}
+
+__disable_schedule() {
+
+  pushd aws_provisioning
+  python src/schedule.py $APPLICATION disable
+  popd
+
+
 __publish() {
   pushd iag-webapp
   make tag
@@ -90,21 +105,27 @@ build() {
 
 integration() {
     export ENVIRONMENT=int
-
+    __disable_schedule
     __deploy
+    __enable_schedule
     __smoke_test
     __ui_test
+
 }
 
 qa() {
     export ENVIRONMENT=qa
+    __disable_schedule
     __deploy
+    __enable_schedule
     __smoke_test
 }
 
 stage() {
     export ENVIRONMENT=stage
+    __disable_schedule
     __deploy
+    __enable_schedule
     __smoke_test
 }
 
