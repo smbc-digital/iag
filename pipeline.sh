@@ -118,7 +118,7 @@ qa() {
     export ENVIRONMENT=qa
     __disable_schedule
     __deploy
-    __enable_schedule
+#    __enable_schedule
     __smoke_test
 }
 
